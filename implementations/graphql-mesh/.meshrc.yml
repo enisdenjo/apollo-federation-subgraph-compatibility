@@ -17,7 +17,13 @@ sources:
                   - fields: "id"
                   - fields: "sku package"
                   - fields: "sku variation { id }"
-                resolveReference: ./src/resolve-product.ts
+                resolveReference:
+                  queryFieldName: _resolveProduct
+                  args:
+                    id: "{root.id}"
+                    sku: "{root.sku}"
+                    package: "{root.package}"
+                    variationId: "{root.variation.id}"
                 fields:
                   - name: createdBy
                     config:
@@ -31,12 +37,19 @@ sources:
               config:
                 key:
                   - fields: "sku package"
-                resolveReference: ./src/resolve-deprecated-product.ts
+                resolveReference:
+                  queryFieldName: _resolveDeprecatedProduct
+                  args:
+                    sku: "{root.sku}"
+                    package: "{root.package}"
             - name: ProductResearch
               config:
                 key:
                   - fields: "study { caseNumber }"
-                resolveReference: ./src/resolve-product-research.ts
+                resolveReference:
+                  queryFieldName: _resolveProductResearch
+                  args:
+                    studyCaseNumber: "{root.study.caseNumber}"
             - name: ProductDimension
               config:
                 shareable: true
@@ -66,6 +79,10 @@ sources:
                   - name: yearsOfEmployment
                     config:
                       external: true
+
+transforms:
+  - filterSchema:
+      - Query.!_resolve*
 
 plugins:
   - apolloInlineTrace: {}

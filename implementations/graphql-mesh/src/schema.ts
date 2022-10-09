@@ -18,6 +18,42 @@ const resolvers: Resolvers = {
         return null;
       }
     },
+    // Internal fields
+    _resolveProduct(_, args) {
+      if (args.id != null) {
+        return products.find((product) => product.id === args.id) || null;
+      }
+      if (args.sku != null && args.package != null) {
+        return (
+          products.find(
+            (product) =>
+              product.sku === args.sku && product.package === args.package
+          ) || null
+        );
+      }
+      if (args.sku != null && args.variationId != null) {
+        return (
+          products.find(
+            (product) =>
+              product.sku === args.sku &&
+              product.variation?.id === args.variationId
+          ) || null
+        );
+      }
+      return null;
+    },
+    _resolveDeprecatedProduct(_, args) {
+      if (
+        args.sku === deprecatedProduct.sku &&
+        args.package === deprecatedProduct.package
+      ) {
+        return deprecatedProduct;
+      }
+      return null;
+    },
+    _resolveProductResearch(_, args) {
+      return productResearch.find(p => p.study.caseNumber === args.studyCaseNumber) || null;
+    }
   },
   DeprecatedProduct: {
     createdBy() {

@@ -40,6 +40,10 @@ type Query {
   product(id: ID!): Product
   deprecatedProduct(sku: String!, package: String!): DeprecatedProduct
     @deprecated(reason: "Use product query instead")
+  # internal fields to be removed in the final schema
+  _resolveProduct(id: ID, sku: String, package: String, variationId: String): Product
+  _resolveDeprecatedProduct(sku: String, package: String): DeprecatedProduct
+  _resolveProductResearch(studyCaseNumber: ID): ProductResearch
 }
 
 type User {

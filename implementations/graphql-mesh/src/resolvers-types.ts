@@ -60,9 +60,31 @@ export type ProductVariation = {
 
 export type Query = {
   __typename?: 'Query';
+  _resolveDeprecatedProduct?: Maybe<DeprecatedProduct>;
+  _resolveProduct?: Maybe<Product>;
+  _resolveProductResearch?: Maybe<ProductResearch>;
   /** @deprecated Use product query instead */
   deprecatedProduct?: Maybe<DeprecatedProduct>;
   product?: Maybe<Product>;
+};
+
+
+export type Query_ResolveDeprecatedProductArgs = {
+  package?: InputMaybe<Scalars['String']>;
+  sku?: InputMaybe<Scalars['String']>;
+};
+
+
+export type Query_ResolveProductArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  package?: InputMaybe<Scalars['String']>;
+  sku?: InputMaybe<Scalars['String']>;
+  variationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type Query_ResolveProductResearchArgs = {
+  studyCaseNumber?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -231,6 +253,9 @@ export type ProductVariationResolvers<ContextType = any, ParentType extends Reso
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  _resolveDeprecatedProduct?: Resolver<Maybe<ResolversTypes['DeprecatedProduct']>, ParentType, ContextType, Partial<Query_ResolveDeprecatedProductArgs>>;
+  _resolveProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, Partial<Query_ResolveProductArgs>>;
+  _resolveProductResearch?: Resolver<Maybe<ResolversTypes['ProductResearch']>, ParentType, ContextType, Partial<Query_ResolveProductResearchArgs>>;
   deprecatedProduct?: Resolver<Maybe<ResolversTypes['DeprecatedProduct']>, ParentType, ContextType, RequireFields<QueryDeprecatedProductArgs, 'package' | 'sku'>>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
 };
